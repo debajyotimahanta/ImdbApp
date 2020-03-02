@@ -18,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class ImdbEntityDAOImpl implements ImdbEntityDAO {
         ImdbBaseEntity entity;
         while (itr.hasNext()) {
             entity = itr.next();
-            if(entity !=null) entityManager.persist(entity);
+            if (entity != null) entityManager.persist(entity);
 
             i++;
             if (i % 30 == 0) {
@@ -63,23 +64,29 @@ public class ImdbEntityDAOImpl implements ImdbEntityDAO {
 
         int i = 0;
         Name entity;
-        while ((entity = (Name) itr.next()) != null) {
+        while (itr.hasNext()) {
             try {
-            Name.NameBuilder builder = entity.toBuilder();
-            Set<Title> titles = entity.getKnownForTitles().stream()
-                    .map(t -> entityManager.find(Title.class, t.getTconst()))
-                    .collect(Collectors.toSet());
-            builder.knownForTitles(titles);
+                try {
+                    entity = (Name) itr.next();
+                } catch (NoSuchElementException ex) {
+                    log.info("Reached the end");
+                    break;
+                }
+                Name.NameBuilder builder = entity.toBuilder();
+                Set<Title> titles = entity.getKnownForTitles().stream()
+                        .map(t -> entityManager.find(Title.class, t.getTconst()))
+                        .collect(Collectors.toSet());
+                builder.knownForTitles(titles);
 
                 entityManager.persist(entity);
 
 
-            i++;
-            if (i % 30 == 0) {
-                entityManager.flush();
-                entityManager.clear();
-            }
-            //if (i == 10000) break;
+                i++;
+                if (i % 30 == 0) {
+                    entityManager.flush();
+                    entityManager.clear();
+                }
+                //if (i == 10000) break;
             } catch (Exception ex) {
                 throw ex;
             }

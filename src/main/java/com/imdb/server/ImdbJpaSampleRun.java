@@ -42,7 +42,6 @@ public class ImdbJpaSampleRun {
         return (args) -> {
 
             log.info("Starting application");
-            List<String> restOfArgs = Arrays.asList(args).subList(1, args.length);
 
             FakeQueue queue = new FakeQueue();
             ImdbEntityWorker importWorker = new ImdbEntityWorker(queue, 1);
@@ -52,18 +51,24 @@ public class ImdbJpaSampleRun {
                     ratingRepository,
                     queue
             );
-
-            switch (args[0]) {
-                case "import":
-                    //importImdb(dao, ratingRepository);
-                    break;
-                case "getRating":
-                    calculator.calculateSeasonRating("tt10110314", 2);
-                    break;
-                case "updateRating":
-                    calculator.updateRating("tt10110314", 5);
-                    break;
+            //Not args send when run from IDE
+            if(args == null || args.length ==0) {
+                importImdb(dao, ratingRepository);
+            } else {
+                switch (args[0]) {
+                    case "import":
+                        importImdb(dao, ratingRepository);
+                        break;
+                    case "getRating":
+                        calculator.calculateSeasonRating("tt10110314", 2);
+                        break;
+                    case "updateRating":
+                        calculator.updateRating("tt10110314", 5);
+                        break;
+                }
             }
+
+
         };
     }
 

@@ -4,6 +4,9 @@ import com.imdb.exceptions.RetryException;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * An simple in-memory queue that uses {@link ConcurrentLinkedQueue}
+ */
 public class FakeQueue implements WorkQueue {
     ConcurrentLinkedQueue<WorkItem> queue;
 

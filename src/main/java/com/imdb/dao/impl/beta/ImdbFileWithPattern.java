@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Stream;
 
+/**
+ * Reads a file based on the start ane end pattern.
+ */
 public class ImdbFileWithPattern implements ImdbFile {
     private final ImdbFileWithStatAndEnd fileReader;
     private final CSVReaderHeaderAware csvReader;

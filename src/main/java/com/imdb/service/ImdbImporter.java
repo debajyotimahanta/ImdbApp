@@ -16,6 +16,11 @@ import org.apache.commons.logging.LogFactory;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * This class us used to async import {@link com.imdb.dao.ImdbFile}.
+ * The actual task of import is handled async by {@link com.imdb.workers.ImdbEntityWorker}
+ * which pools the {@link WorkQueue}.
+ */
 public class ImdbImporter {
     public static final String IMDB_TITLE_URL = "https://datasets.imdbws.com/title.basics.tsv.gz";
     public static final String IMDB_EPISODE_URL = "https://datasets.imdbws.com/title.episode.tsv.gz";

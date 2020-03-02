@@ -19,6 +19,10 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * This file lets to specify scan based on a range defined by the start and end line
+ * It useful if you dont want to read the whole file
+ */
 public class ImdbFileWithStatAndEnd implements ImdbFile {
     private static Log log = LogFactory.getLog(ImdbFileWithStatAndEnd.class);
 

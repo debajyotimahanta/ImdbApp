@@ -11,6 +11,12 @@ import com.sun.istack.Nullable;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The Service class which async calculates the rating for a given TV series.
+ * This class is inject with {@link RatingStregety} which deifines how the Seassons rating
+ * is calculated. When a request to read the ratting is performed, we return the current stored rating in
+ * {@link Rating} and queue up a {@link WorkItem} to async recalcuate the rating and update the same.
+ */
 public class RatingCalculator {
     private final RatingStregety stratgey;
     private final RatingRepository ratingRepository;
@@ -24,6 +30,9 @@ public class RatingCalculator {
         this.queue = queue;
     }
 
+    /**
+     * Queue a task to update the Rating
+     */
     public void updateRating(String tvSeriesId, int seassonNumber) {
         queue.put(new WorkItem(() -> updateRating(tvSeriesId, seassonNumber, null)));
     }
@@ -45,6 +54,9 @@ public class RatingCalculator {
         }
     }
 
+    /**
+     * Return the current stored rating and quue a task to recalculate the rating
+     */
     public Double calculateSeasonRating(String tvSeriesId, int seassonNumber) {
         Rating seseasonEntity = ratingRepository
                 .findById(tvSeriesId)

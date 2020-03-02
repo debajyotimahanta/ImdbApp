@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
+}
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+        }
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test) {
+    group 'Verification'
+    description 'Runs the integration tests.'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = classpath.plus(files(sourceSets.integrationTest.runtimeClasspath))
+}
+
+
+dependencies {
+    compile 'com.opencsv:opencsv:5.1'
+    implementation 'org.apache.logging.log4j:log4j:2.13.0'
+    implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    implementation 'org.hibernate:hibernate-core:5.4.12.Final'
+    implementation 'org.xerial:sqlite-jdbc:3.30.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.2.5.RELEASE'
+    implementation 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    implementation 'com.enigmabridge:hibernate4-sqlite-dialect:0.1.2'
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.2.5.RELEASE'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+    integrationTestImplementation 'org.mockito:mockito-all:1.10.19'
+    integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.2.5.RELEASE'
+    integrationTestImplementation 'org.springframework.boot:spring-boot-starter-test:2.2.5.RELEASE'
+    integrationTestImplementation 'org.hibernate:hibernate-core:5.4.12.Final'
+    integrationTestImplementation 'org.xerial:sqlite-jdbc:3.30.1'
+    integrationTestImplementation 'com.github.gwenn:sqlite-dialect:0.1.0'
+    integrationTestImplementation 'com.h2database:h2:1.4.200'
+}
+apply plugin: 'checkstyle'
+apply plugin: org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+checkstyle {
+    toolVersion '7.8.1'
+    configFile file("config/checkstyle/checkstyle.xml")
+}
+
+checkstyleMain {
+    ignoreFailures = false
+    source ='src/main/java'
+}
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
+    }
+}
+
+

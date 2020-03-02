@@ -1,0 +1,11 @@
+<persistence-unit name="com.imdb.movie_catalog">
+    <description>Hibernate EntityManager Demo</description>
+    <class>com.baeldung.hibernate.pojo.Movie</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect"/>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+        <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:src/main/resources/moviedb.db"/>
+    </properties>
+</persistence-unit>

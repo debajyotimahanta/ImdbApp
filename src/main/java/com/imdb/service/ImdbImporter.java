@@ -45,10 +45,10 @@ public class ImdbImporter {
     public void importAll() throws IOException, CsvValidationException {
         QueueImportUrlFor(IMDB_TITLE_URL, new TitleMapper());
         QueueImportUrlFor(IMDB_NAME_URL, new NameMapper());
-        //QueueImportUrlFor(IMDB_PRINCIPAL_URL, new PrincipalMapper());
-        //QueueImportUrlFor(IMDB_EPISODE_URL, new EpisodeMapper());
-        //QueueImportUrlFor(IMDB_RATING_URL, new RatingMapper());
-        //QueueImportUrlFor(IMDB_CREW_URL, new CrewMapper());
+        QueueImportUrlFor(IMDB_PRINCIPAL_URL, new PrincipalMapper());
+        QueueImportUrlFor(IMDB_EPISODE_URL, new EpisodeMapper());
+        QueueImportUrlFor(IMDB_RATING_URL, new RatingMapper());
+        QueueImportUrlFor(IMDB_CREW_URL, new CrewMapper());
     }
 
     private void QueueImportUrlFor(String url, ImdbMapper titleMapper) throws IOException, CsvValidationException {
